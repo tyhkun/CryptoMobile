@@ -35,6 +35,7 @@
 #######################################################
 
 import hmac
+import bitstring
 from struct        import pack
 from hashlib       import sha256
 from Crypto.Cipher import AES
@@ -47,9 +48,8 @@ __all__ = ['Milenage', 'KDF', 'make_OPc', 'xor_buf',
 
 
 def rot_buf(b, r):
-    """rotate buffer b by r bits, r must be an 8-bit multiple"""
-    r //= 8
-    return b[r:] + b[:r]
+    c = bitstring.BitArray(b)
+    return (c[r:] + c[:r]).bytes
 
 def make_OPc( K, OP ):
     """derive OP with K to produce OPc"""
